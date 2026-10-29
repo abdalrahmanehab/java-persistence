@@ -8,22 +8,29 @@ import org.hibernate.cfg.Configuration;
 public class Main {
     public static void main(String[] args) {
         Student s1 = new Student();
-        s1.setId(1L);
-        s1.setName("Abdalrahman");
-        s1.setLevel("Senior");
+        s1.setId(2L);
+        s1.setName("Basma");
+        s1.setLevel("Semi-senior");
 
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(com.abdalrahman.hibernate.Student.class);
-        configuration.configure("hibernate.cfg.xml");
 
-        SessionFactory factory = configuration.buildSessionFactory();
+        SessionFactory factory = new Configuration()
+                .addAnnotatedClass(com.abdalrahman.hibernate.Student.class)
+                .configure()
+                .buildSessionFactory();
 
         Session session = factory.openSession();
-
         Transaction transaction = session.beginTransaction();
 
-        session.persist(s1);
+//        session.persist(s1);
+        Student st = session.get(Student.class,3);
+        System.out.println(st);
 
+
+        session.merge(s1);
         transaction.commit();
+
+
+        session.close();
+        factory.close();
     }
 }
